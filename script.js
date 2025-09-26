@@ -79,20 +79,66 @@ const getCountryAndNeighbour = function (country) {
 */
 
 
-const getCountryData = function (country) {
-  fetch(`https://restcountries.com/v2/name/${country}`)
-    .then(Response => Response.json())
-    .then(data => {
-      renderCountry(data[0])
-      const neighbour = data[0].borders[0]
+//     const getCountryData = function (country) {
+  //   //COuntry 1
+  //   fetch(`https://restcountries.com/v2/name/${country}`)
+//     .then(response => {
+//       console.log(response)
 
-      if(!neighbour) return
+//       if(!response.ok)
+//         throw new Error(`Country not found (${response.status}) `)
 
+//       return response.json()
+//     })
+//     .then(data => {
+  //       renderCountry(data[0])
+  //       const neighbour = data[0].borders[0]
+  
+  //       if(!neighbour) return
+  
+  //       // County 2
+  //       return fetch(`https://restcountries.com/v2/alpha/${neighbour}`)
+//     })
+//     .then(response => {
+  //       console.log(response)
+  
+//       if(!response.ok)
+//         throw new Error(`Country not found (${response.status}) `)
+
+//       return response.json()
+//     })
+//     .then(data => renderCountry(data, 'neighbour'))
+//     .catch(err => {
+  //         console.error(`${err} 🚫🚫🚫`)
+  //         renderError(`Something went wrong 🚫🚫🚫 ${err.message}`)
+  //     })
+  //     .finally(() => {
+    //       countriesContainer.style.opacity = 1;
+    
+    //     })
+    // }
+    const getJSON = function(url, errMsg = 'Something went wrong') {
+      return fetch(url)
+      .then(response => {
+          console.log(response)
+          if(!response.ok)
+            throw new Error(`${errMsg} (${response.status})`)
+          return response.json()})
+    }
+    
+    
+    const getCountryData = function (country) {
+      //COuntry 1
+      getJSON(`https://restcountries.com/v2/name/${country}`, `Country not found`)
+      .then(data => {
+        renderCountry(data[0])
+        const neighbour = data[0].borders[0]
+        
+      if (!neighbour) throw new Error(`No neighbour found!`)
 
       // County 2
-      return fetch(`https://restcountries.com/v2/alpha/${neighbour}`)
+      return getJSON(`https://restcountries.com/v2/alpha/${neighbour}`, `Country not found`)
     })
-    .then(response => response.json())
     .then(data => renderCountry(data, 'neighbour'))
     .catch(err => {
         console.error(`${err} 🚫🚫🚫`)
