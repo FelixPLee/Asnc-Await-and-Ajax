@@ -150,7 +150,16 @@ const getCountryAndNeighbour = function (country) {
     })
 }
 
+const whereAmI = function (lat, lng)
+{
+  return fetch(`https://geocode.xyz/51.50354,-0.12768?geoit=xml&auth=your_api_key`)
+  .then(response => {
+    console.log(response)
+    return response.json()
+    .then(data => console.log(data))
+  })
+}
 
 btn.addEventListener("click", function() {
-  getCountryData('brazil')
+  whereAmI(-23.5489, -46.6388)
 })
